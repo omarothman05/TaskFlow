@@ -3,7 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
-import API from "@/lib/api";
+import API from "../../../../api"
 
 
 export default function LoginPage() {
