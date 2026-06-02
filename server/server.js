@@ -44,11 +44,23 @@ app.get("/", (req, res) => {
   res.send("TaskFlow API is running");
 });
 
+
 app.post("/register", async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const email = req.body.email?.trim().toLowerCase();
+    const password = req.body.password;
 
-    const email = req.body.email.trim().toLowerCase();
+    if (!email || !password) {
+      return res.status(400).json({ message: "Missing fields" });
+    }
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
       email,
@@ -58,22 +70,16 @@ app.post("/register", async (req, res) => {
     await user.save();
 
     const token = jwt.sign(
-  {
-    id: user._id,
-    email: user.email,
-  },
-  process.env.JWT_SECRET,
-  {
-    expiresIn: "1d",
-  }
-);
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-res.json({
-  message: "Register successful",
-  token,
-});
+    res.json({ message: "Register successful", token });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.log("REGISTER ERROR:", err); // 🔥 مهم جدًا
+    res.status(500).json({ error: err.message });
   }
 });
 

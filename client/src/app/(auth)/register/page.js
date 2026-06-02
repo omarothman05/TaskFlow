@@ -31,7 +31,8 @@ export default function RegisterPage() {
   });
 
   const data = await res.json();
-  
+  console.log("REGISTER RESPONSE:", data);
+  console.log("STATUS:", res.status);
 
   if (!res.ok) {
     alert(data.message || "Email already exists");
