@@ -48,8 +48,10 @@ app.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+    const email = req.body.email.trim().toLowerCase();
+
     const user = new User({
-      email: req.body.email,
+      email,
       password: hashedPassword
     });
 
@@ -77,7 +79,8 @@ res.json({
 
 app.post("/login", async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const email = req.body.email.trim().toLowerCase();
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(400).json({ message: "User not found" });
