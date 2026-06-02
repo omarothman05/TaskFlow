@@ -13,8 +13,10 @@ const cors = require("cors");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: "https://task-flow-jet-theta.vercel.app",
+  credentials: true
+}));
 
 connectDB();
 
@@ -28,7 +30,7 @@ const verifyToken = (req, res, next) => {
   try {
     const token = authHeader.replace("Bearer ", "");
 
-    const decoded = jwt.verify(token, "SECRET_KEY");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.userId = decoded.id;
 
@@ -58,7 +60,7 @@ app.post("/register", async (req, res) => {
     id: user._id,
     email: user.email,
   },
-  "SECRET_KEY",
+  process.env.JWT_SECRET,
   {
     expiresIn: "1d",
   }
@@ -95,7 +97,7 @@ app.post("/login", async (req, res) => {
     id: user._id,
     email: user.email,
   },
-  "SECRET_KEY",
+  process.env.JWT_SECRET,
   {
     expiresIn: "1d",
   }

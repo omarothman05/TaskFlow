@@ -3,6 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import API from "../../../../api";
 
 export default function RegisterPage() {
   const initialValues = {
@@ -21,7 +22,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (values) => {
 
-  const res = await fetch("http://localhost:5000/register", {
+  const res = await fetch(`${API}/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

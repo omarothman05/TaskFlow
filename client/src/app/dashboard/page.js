@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import API from "../../../api";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function DashboardPage() {
 
     const fetchTasks = async () => {
       try {
-        const res = await fetch("http://localhost:5000/tasks", {
+        const res = await fetch(`${API}/tasks`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -55,7 +56,7 @@ export default function DashboardPage() {
   const token = localStorage.getItem("token");
 
   try {
-    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+    const res = await fetch(`${API}/tasks/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +94,7 @@ export default function DashboardPage() {
     if (!title.trim()) return;
 
     try {
-      const res = await fetch("http://localhost:5000/tasks", {
+      const res = await fetch(`${API}/tasks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +127,7 @@ export default function DashboardPage() {
   const token = localStorage.getItem("token");
 
   try {
-    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+    const res = await fetch(`${API}/tasks/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

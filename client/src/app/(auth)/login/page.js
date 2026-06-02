@@ -3,6 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
+import API from "@/lib/api";
 
 
 export default function LoginPage() {
@@ -20,7 +21,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (values) => {
     try {
-      const res = await fetch("http://localhost:5000/login", {
+      const res = await fetch(`${API}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
